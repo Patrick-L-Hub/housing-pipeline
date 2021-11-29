@@ -3,9 +3,6 @@ import os.path
 import sqlite3
 from scripts import craigslist_scrape
 
-
-
-
 def main():
 
     df = craigslist_scrape.allListings()
