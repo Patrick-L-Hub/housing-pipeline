@@ -20,18 +20,19 @@ def pageListings(soup):
     convert data to a pandas data frame
     '''
     housing_list = []
-    #find info/metrics of each post
+    # grab the total number of house listings
     num_listings = int(soup.find(class_="total").get_text())
+    #find info/metrics of each post
     for row in soup.find_all(class_= "result-row"):
         #Try except to avoid null value errors
         num_br_sqft = []
         try:
             pid = row.get('data-pid') #posting id
-            rtitle = row.find(class_="result-title hdrlnk").get_text()
-            href = row.find(class_="result-title hdrlnk").get('href')
-            date = row.find(class_="result-date").get('datetime')
-            price = row.find(class_='result-price').text
-            bed_size = row.find(class_='housing').get_text().split('\n')
+            rtitle = row.find(class_="result-title hdrlnk").get_text() #posting title
+            href = row.find(class_="result-title hdrlnk").get('href') #posting link
+            date = row.find(class_="result-date").get('datetime') #date posted
+            price = row.find(class_='result-price').text # price
+            bed_size = row.find(class_='housing').get_text().split('\n') #number of beds and housing square footage
             if "br" not in bed_size[1] and "ft" not in bed_size[1]:
                 bed_size[1] = "N/A"
             elif "ft" in bed_size[1]:
