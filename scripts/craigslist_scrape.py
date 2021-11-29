@@ -52,10 +52,8 @@ def pageListings(soup):
 def allListings():
     '''
     loop through all listings by adjusting the web page to scrape
-    each web page has a maximum of 120 listings but there can be up to 3000
-    listings for a given region
-    append to master dataframe after grabbing generating a dataframe for
-    the given webpage
+    each web page has a maximum of 120 listings but there can be up to 3000 listings for a given region
+    append to master dataframe after creating a dataframe for the given webpage
     '''
     tot_df = pd.DataFrame()
     webpage = requests.get('https://neworleans.craigslist.org/d/real-estate/search/rea')
