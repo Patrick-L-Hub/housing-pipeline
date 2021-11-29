@@ -7,17 +7,23 @@ import seaborn as sns
 
 
 def makeSoup(webpage):
+    '''
+    grab html from the specified webpage and format it into a beautiful
+    soup object that is easily parsed
+    '''
     soup = BeautifulSoup(webpage.content,"lxml")
-    #print(soup)
     return soup
 
 
 def pageListings(soup):
+    '''
+    parse html of page listings and extract the posting title,
+    href link, published date, price, number of bedrooms and sqft of the home.
+    convert data to a pandas data frame
+    '''
     housing_list = []
-    #print(soup)
     #find info/metrics of each post
     num_list = int(soup.find(class_="total").get_text())
-    #print(num_list)
     for row in soup.find_all(class_= "result-row"):
         #Try except to avoid null value errors
         num_br_sqft = []
@@ -42,12 +48,17 @@ def pageListings(soup):
 
     df = pd.DataFrame(housing_list)
     df.columns=['post_id','title','price','num_br','sqft','post_date','url']
-    #print("123")
-    #print(rtitle_txt)
-    #print(df.head(10))
+
     return(df,num_list)
 
 def allListings():
+    '''
+    loop through all listings by adjusting the web page to scrape
+    each web page has a maximum of 120 listings but there can be up to 3000
+    listings for a given region
+    append to master dataframe after grabbing generating a dataframe for
+    the given webpage
+    '''
     tot_df = pd.DataFrame()
     webpage = requests.get('https://neworleans.craigslist.org/d/real-estate/search/rea')
     curr_df, num_list = pageListings(makeSoup(webpage))
@@ -62,7 +73,3 @@ def allListings():
         tot_df = tot_df.append(curr_df, ignore_index = True)
 
     return tot_df
-
-#page_df, num_list = pageListings(makeSoup(webpage))
-
-#print(num_list)
