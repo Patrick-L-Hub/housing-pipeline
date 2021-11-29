@@ -21,7 +21,7 @@ def pageListings(soup):
     '''
     housing_list = []
     #find info/metrics of each post
-    num_list = int(soup.find(class_="total").get_text())
+    num_listings = int(soup.find(class_="total").get_text())
     for row in soup.find_all(class_= "result-row"):
         #Try except to avoid null value errors
         num_br_sqft = []
@@ -57,13 +57,13 @@ def allListings():
     '''
     tot_df = pd.DataFrame()
     webpage = requests.get('https://neworleans.craigslist.org/d/real-estate/search/rea')
-    curr_df, num_list = pageListings(makeSoup(webpage))
+    curr_df, num_listings = pageListings(makeSoup(webpage))
     tot_df = tot_df.append(curr_df, ignore_index = True)
     for i in range(0,3000,120):
-        if i >= num_list:
+        if i >= num_listings:
             break
         webpage = requests.get('https://neworleans.craigslist.org/d/real-estate/search/rea?s='+str(i))
-        curr_df,num_list = pageListings(makeSoup(webpage))
+        curr_df,num_listings = pageListings(makeSoup(webpage))
         tot_df = tot_df.append(curr_df, ignore_index = True)
 
     return tot_df
